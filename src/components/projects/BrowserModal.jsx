@@ -93,32 +93,75 @@ export default function BrowserModal({ isOpen, onClose, project }) {
               {/* Cabecera del Proyecto */}
               <div className="border-b border-gray-200 pb-8 text-center sm:text-left">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">{project.title}</h1>
+                
+                {project.role && (
+                  <div className="mb-6 flex items-center gap-2 justify-center sm:justify-start">
+                    <span className="text-xs uppercase tracking-widest font-bold bg-gray-900 text-white px-3 py-1 rounded-sm shadow-sm">Rol</span>
+                    <span className="text-lg font-semibold text-gray-700">{project.role}</span>
+                  </div>
+                )}
+                
                 <p className="text-xl text-gray-600 leading-relaxed font-light max-w-4xl">{project.longDescription}</p>
               </div>
 
               <div className="grid grid-cols-1 xl:grid-cols-3 gap-12">
                 
                 {/* Columna Izquierda: Detalles (Toma 2/3 del ancho en pantallas grandes) */}
-                <div className="xl:col-span-2 space-y-12">
+                <div className="xl:col-span-2 space-y-16">
                   
-                  {/* Galería / Diagramas (Placeholder) */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                      <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                      Arquitectura del Sistema
-                    </h2>
-                    <div className="bg-gray-50 rounded-2xl border-2 border-dashed border-gray-300 p-8 flex flex-col items-center justify-center min-h-[450px] text-gray-400 group hover:bg-gray-100 hover:border-blue-400 transition-all cursor-pointer">
-                      <div className="bg-white p-5 rounded-full shadow-sm mb-4 group-hover:scale-110 transition-transform">
-                        <svg className="w-14 h-14 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                      </div>
-                      <p className="font-bold text-gray-600 text-xl mb-3">Diagrama de Infraestructura (Ejemplo)</p>
-                      <p className="text-base text-center max-w-lg">Sube aquí el diagrama C4 de tu arquitectura, el diagrama Entidad-Relación de PostgreSQL o capturas del dashboard funcionando.</p>
-                      <button className="mt-8 px-6 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-semibold hover:bg-gray-50 text-gray-700 shadow-sm transition-colors">Seleccionar Imagen</button>
+                  {/* Fases del Proyecto (Si existen) */}
+                  {project.phases && (
+                    <div className="space-y-12">
+                      {project.phases.map((phase, idx) => (
+                        <div key={idx} className="animate-slide-up" style={{ animationDelay: `${idx * 0.1}s` }}>
+                          <h3 className="text-2xl font-extrabold text-gray-900 border-l-4 border-blue-600 pl-4 py-1 bg-gradient-to-r from-blue-50 to-transparent rounded-r-lg mb-6 tracking-tight">
+                            {phase.title}
+                          </h3>
+                          
+                          {phase.description && (
+                            <p className="text-gray-600 font-medium mb-6 leading-relaxed border-b border-gray-100 pb-4 italic">
+                              {phase.description}
+                            </p>
+                          )}
+                          
+                          <ul className="space-y-4">
+                            {phase.items.map((item, itemIdx) => (
+                              <li key={itemIdx} className="flex items-start gap-4 group">
+                                <div className="mt-2 w-2 h-2 rounded-full bg-blue-500 flex-shrink-0 group-hover:scale-125 transition-transform shadow-sm"></div>
+                                <span 
+                                  className="text-gray-700 leading-relaxed text-lg"
+                                  dangerouslySetInnerHTML={{ 
+                                    __html: item.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900 font-bold">$1</strong>') 
+                                  }}
+                                ></span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
                     </div>
-                  </div>
+                  )}
 
-                  {/* Características clave */}
-                  {project.features && (
+                  {/* Galería / Diagramas (Solo si no hay fases o como complemento) */}
+                  {!project.phases && (
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        Arquitectura del Sistema
+                      </h2>
+                      <div className="bg-gray-50 rounded-2xl border-2 border-dashed border-gray-300 p-8 flex flex-col items-center justify-center min-h-[450px] text-gray-400 group hover:bg-gray-100 hover:border-blue-400 transition-all cursor-pointer">
+                        <div className="bg-white p-5 rounded-full shadow-sm mb-4 group-hover:scale-110 transition-transform">
+                          <svg className="w-14 h-14 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <p className="font-bold text-gray-600 text-xl mb-3">Diagrama de Infraestructura (Ejemplo)</p>
+                        <p className="text-base text-center max-w-lg">Sube aquí el diagrama C4 de tu arquitectura, el diagrama Entidad-Relación de PostgreSQL o capturas del dashboard funcionando.</p>
+                        <button className="mt-8 px-6 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-semibold hover:bg-gray-50 text-gray-700 shadow-sm transition-colors">Seleccionar Imagen</button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Características clave (Solo si no hay fases) */}
+                  {!project.phases && project.features && (
                     <div>
                       <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                         <svg className="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>

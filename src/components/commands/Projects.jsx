@@ -39,20 +39,43 @@ const projectsList = [
   },
   {
     id: 3,
-    title: 'Prueba',
-    shortDescription: 'API RESTful para un e-commerce con enfoque en seguridad, mitigación de ataques DDoS e inyección SQL.',
-    longDescription: 'Una API robusta diseñada con principios de seguridad "Security by Design". Maneja desde el catálogo de productos hasta el procesamiento seguro de pagos, asegurando la integridad de las transacciones y protegiendo los datos sensibles de los clientes.',
-    techSummary: 'Node.js, Express, JWT, PostgreSQL, Docker',
-    techDetails: ['Node.js', 'Express', 'PostgreSQL', 'Docker', 'JWT', 'Helmet', 'Rate Limiting'],
-    features: [
-      'Protección contra inyecciones SQL y Cross-Site Scripting (XSS).',
-      'Rate limiting configurado para mitigar ataques DDoS y de fuerza bruta.',
-      'Validación exhaustiva de inputs en cada endpoint.',
-      'Despliegue automatizado mediante contenedores Docker.'
+    title: 'Laboratorio de Ciberseguridad e Infraestructura',
+    shortDescription: 'Auditoría y Fortificación de Infraestructura en entornos Active Directory.',
+    longDescription: 'Diseño, implementación y auditoría de un entorno empresarial simulado (Sandbox) utilizando VMWare. El objetivo del proyecto fue construir una arquitectura de red corporativa realista con enrutamiento pfSense y un Controlador de Dominio (Windows Server 2022), para ejecutar ejercicios de seguridad ofensiva (Red Team) y proponer planes de remediación estratégicos (Blue Team).',
+    role: 'Administrador de Sistemas / Arquitecto DevSecOps',
+    techSummary: 'VMWare, pfSense, AD, Windows Server, Kali Linux',
+    techDetails: ["VMWare", "pfSense", "Windows Server 2022", "Kali Linux", "Impacket", "Kerberos", "Active Directory"],
+    phases: [
+      {
+        title: 'Fase 1: Arquitectura e Infraestructura',
+        items: [
+          '**Despliegue de red segmentada:** Implementación mediante un firewall de código abierto (pfSense), separando las interfaces WAN y LAN.',
+          '**Ecosistema Active Directory:** Configuración de equipos cliente (Windows 10) y servidores con políticas de seguridad perimetral activas (Windows Defender / Firewall).'
+        ]
+      },
+      {
+        title: 'Fase 2: Ejercicios de Seguridad Ofensiva (Red Team)',
+        description: 'Se ejecutaron simulaciones de amenazas avanzadas para evaluar la resiliencia de la red:',
+        items: [
+          '**Reconocimiento y Evasión:** Escaneo de superficie de ataque evadiendo firewalls restrictivos para descubrir servicios críticos (SMB, LDAP, Kerberos, WinRM).',
+          '**Captura de Credenciales:** Explotación de protocolos de resolución de nombres locales (LLMNR/NBT-NS Poisoning) para la intercepción de hashes NTLMv2.',
+          '**Escalada de Privilegios (Kerberoasting):** Abuso de la delegación de Kerberos para extraer tickets (TGS) de cuentas de servicio con configuraciones vulnerables (SPN) y cracking offline criptográfico.',
+          '**Compromiso Total y Persistencia:** Extracción profunda de la base de datos de credenciales del servidor (NTDS.dit) para forjar "Golden Tickets" (AES-256). Uso de técnicas Living off the Land (WMI/SMB) para eludir los motores de detección de Windows Defender.'
+        ]
+      },
+      {
+        title: 'Fase 3: Fortificación y Remediación (Blue Team)',
+        description: 'Con base en los hallazgos, se diseñó un plan de mitigación a nivel corporativo:',
+        items: [
+          '**Políticas de Red:** Desactivación de protocolos legacy (LLMNR) mediante GPOs y obligatoriedad de firmas SMB (SMB Signing) para mitigar ataques Man-In-The-Middle.',
+          '**Gestión de Identidades:** Migración de cuentas de servicio tradicionales a **gMSA** (Group Managed Service Accounts) para asegurar una rotación criptográfica automática de 120 caracteres.',
+          '**Defensa Profunda:** Restricción de enumeración mediante RPC, rotación programada de la cuenta crítica krbtgt e implementación de un modelo de administración por capas (Tiering) para proteger los privilegios de Domain Admin.'
+        ]
+      }
     ],
     repo: '#',
     demo: '#',
-    fakeUrl: 'api.secure-ecommerce.dev/v1/docs'
+    fakeUrl: 'lab.security-audit.local/infra'
   }
 ];
 

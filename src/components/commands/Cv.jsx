@@ -11,9 +11,9 @@ export default function Cv() {
       </div>
       <div className="mt-4 p-4 border-2 border-dashed border-yellow-400/30 rounded-lg flex flex-col items-center gap-3">
         <p className="text-center text-sm">El archivo está listo para su descarga segura.</p>
-        <a href="/ruta-a-tu-cv.pdf" download="Mi_Curriculum.pdf" className="group relative px-6 py-3 font-bold text-yellow-400 transition-all duration-300 hover:text-black">
+        <a href="/CV_IvanBarranco.pdf" download="CV_IvanBarranco.pdf" className="group relative px-6 py-3 font-bold text-yellow-400 transition-all duration-300 hover:text-black">
           <span className="absolute inset-0 w-full h-full border border-yellow-400 rounded group-hover:bg-yellow-400"></span>
-          <span className="relative">[ DESCARGAR_CV_2024.PDF ]</span>
+          <span className="relative">[ DESCARGAR_CV.PDF ]</span>
         </a>
       </div>
     </div>
