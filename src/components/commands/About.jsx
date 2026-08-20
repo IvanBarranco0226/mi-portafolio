@@ -8,7 +8,7 @@ export default function About() {
         <div className="absolute -inset-1.5 bg-green-500 rounded-lg blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
         <div className="relative overflow-hidden rounded-lg border-2 border-green-500/30 w-32 h-40 md:w-40 md:h-52 shadow-2xl">
           <img 
-            src="/Profile.webp" 
+            src={`${import.meta.env.BASE_URL}Profile.webp`} 
             alt="Ing. Iván Barranco" 
             className="w-full h-full object-cover object-center brightness-110 contrast-110 filter"
           />
