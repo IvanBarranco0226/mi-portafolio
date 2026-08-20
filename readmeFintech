@@ -1,0 +1,48 @@
+# 🛡️ FinTech Batch Sentinel
+
+Un sistema backend de procesamiento masivo por lotes (Batch Processing) diseñado para auditar transacciones financieras y detectar posibles fraudes en tiempo real utilizando procesamiento concurrente.
+
+## 🚀 Arquitectura del Proyecto
+
+El sistema está construido siguiendo los principios de **Clean Architecture** y está dividido en un proyecto Maven Multi-Módulo para garantizar el bajo acoplamiento y la alta cohesión:
+
+1. **`fintech-core` (Dominio):** Contiene los modelos de datos (`Transaction`) y las reglas de negocio puras (`FraudRule`). Totalmente agnóstico a frameworks.
+2. **`fintech-batch` (Procesamiento):** Motor de procesamiento multihilo. Implementa lecturas por fragmentos (Chunks) y delega la ejecución a un `ExecutorService`.
+3. **`fintech-api` (Infraestructura y Web):** Capa de Spring Boot. Maneja la inyección de dependencias, expone los endpoints REST y gestiona la persistencia de datos mediante Spring Data JPA y PostgreSQL.
+
+## ⚙️ Características Técnicas Destacadas
+
+*   **Multithreading y Concurrencia:** Procesamiento de miles de registros divididos en hilos paralelos (Worker Threads) para maximizar el uso del CPU.
+*   **Thread-Safety:** Uso de colecciones concurrentes (`ConcurrentHashMap`) en las reglas de memoria para evitar condiciones de carrera (Race Conditions).
+*   **Patrón Strategy:** Las reglas de fraude (Velocidad, Ventana de Tiempo, Ataque Salami, Umbral de Monto) se inyectan polimórficamente sin modificar el procesador principal (cumpliendo el principio Open/Closed de SOLID).
+*   **Microservicios y Docker:** Infraestructura completamente orquestada con Docker Compose (App + Database).
+
+## 🛑 Reglas de Detección de Fraude Implementadas
+
+*   **VelocityRule:** Detecta ráfagas de transacciones de una misma cuenta en menos de `X` segundos.
+*   **SalamiAttackRule:** Detecta la acumulación de micro-transacciones sospechosas (Robo tipo Salami) usando memoria concurrente.
+*   **TimeWindowRule:** Bloquea operaciones fuera del horario bancario establecido.
+*   **AmountThresholdRule:** Identifica picos anómalos que superen un límite máximo permitido.
+
+## 🛠️ Tecnologías
+
+*   **Lenguaje:** Java 
+*   **Framework:** Spring Boot, Spring Data JPA, Hibernate
+*   **Base de Datos:** PostgreSQL
+*   **Herramientas:** Maven, Docker, Docker Compose, Git
+
+---
+
+## 🏃‍♂️ Cómo ejecutar el proyecto localmente
+
+Gracias a la orquestación con Docker Compose, levantar la infraestructura completa (Base de Datos + API) requiere un solo comando.
+
+### Prerrequisitos
+* Docker y Docker Compose instalados.
+
+### Pasos de despliegue
+
+1. Clona este repositorio.
+2. Construye y levanta los contenedores:
+   ```bash
+   docker-compose up --build

@@ -4,16 +4,16 @@ import ReactDOM from 'react-dom';
 // Función para asignar colores a las etiquetas según la categoría de la tecnología
 const getTechColor = (tech) => {
   const lowercaseTech = tech.toLowerCase();
-  if (['spring boot', 'spring security', 'java', 'node.js', 'express'].some(t => lowercaseTech.includes(t))) {
-    return 'bg-blue-100 text-blue-800 border-blue-200'; // Backend
+  if (['spring', 'java', 'node.js', 'express', 'postgresql', 'postgis', 'mysql', 'jpa', 'hibernate', 'sql', 'multithreading', 'websocket', 'stomp'].some(t => lowercaseTech.includes(t))) {
+    return 'bg-blue-100 text-blue-800 border-blue-200'; 
   }
-  if (['react', 'tailwind', 'html', 'css', 'javascript', 'typescript'].some(t => lowercaseTech.includes(t))) {
-    return 'bg-yellow-100 text-yellow-800 border-yellow-200'; // Frontend
+  if (['react', 'tailwind', 'html', 'css', 'javascript', 'typescript', 'leaflet', 'ux/ui'].some(t => lowercaseTech.includes(t))) {
+    return 'bg-yellow-100 text-yellow-800 border-yellow-200'; 
   }
-  if (['docker', 'github', 'git', 'linux', 'aws'].some(t => lowercaseTech.includes(t))) {
-    return 'bg-red-100 text-red-800 border-red-200'; // DevSecOps/Infra
+  if (['docker', 'github', 'git', 'linux', 'aws', 'maven', 'devsecops', 'pfsense', 'vmware', 'kerberos', 'ia', 'ai'].some(t => lowercaseTech.includes(t))) {
+    return 'bg-red-100 text-red-800 border-red-200'; 
   }
-  return 'bg-gray-100 text-gray-800 border-gray-200'; // Default
+  return 'bg-gray-100 text-gray-800 border-gray-200'; 
 };
 
 export default function BrowserModal({ isOpen, onClose, project }) {

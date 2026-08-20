@@ -1,0 +1,51 @@
+# **TerremotoSense: Monitoreo Sísmico en Tiempo Real**
+
+TerremotoSense es un motor de procesamiento geoespacial desarrollado en Java y React que ingiere, analiza y distribuye datos de actividad sísmica en tiempo real.
+
+A diferencia de un CRUD tradicional, este proyecto resuelve el desafío de **sincronización asíncrona de datos** y **consultas espaciales complejas** (Geofencing), empujando alertas instantáneas a interfaces de usuario mediante WebSockets y simulando la onda sísmica.
+
+## **Características Principales**
+
+* **WebSockets Bidireccionales (Push Notifications):** Comunicación de baja latencia con el cliente usando Spring WebSocket y STOMP. Evita peticiones innecesarias al servidor.
+* **Geofencing y Consultas Espaciales:** Uso nativo de hibernate-spatial (JTS) y la función ST\_DWithin de PostGIS para calcular distancias reales considerando la curvatura terrestre. Permite buscar sismos en un radio específico basado en el GPS del usuario.
+* **Filtros Dinámicos (API REST):** Procesamiento de streams en el backend para filtrar eventos por rango de fechas y magnitud mínima.
+* **Tolerancia a Duplicados:** Filtros lógicos mediante llaves únicas (USGS ID) para mantener la integridad de los datos masivos.
+* **Multi-Stage Docker Build:** Empaquetado optimizado en dos fases, aislando el código fuente y reduciendo el peso de la imagen final para producción.
+
+## **Arquitectura del Sistema**
+
+El sistema opera mediante una arquitectura orientada a eventos (Event-Driven) con un flujo de datos continuo:
+
+1. **Ingesta Automática (Cron Job):** Un hilo programado en Spring Boot consume periódicamente el feed GeoJSON del servicio sismológico (USGS).
+2. **Motor Geoespacial:** Los datos en crudo se transforman en objetos espaciales (Geometrías SRID 4326 WGS 84\) y se almacenan en PostGIS.
+3. **Distribución (Pub/Sub):** Al detectar una anomalía, el backend publica el evento en un Message Broker (STOMP) sin intervención del usuario.
+4. **Visualización Reactiva:** Los clientes conectados reciben el evento y actualizan sus mapas (Leaflet) al instante con animaciones matemáticas.
+
+## **Guía de Inicio Rápido (Local)**
+
+El proyecto está completamente Dockerizado. No necesitas instalar Java, Maven ni PostgreSQL en tu máquina host.
+
+### **Instalación**
+
+1. Clona el repositorio:  
+   git clone https://github.com/tu-usuario/terremotosense-backend.git  
+   cd terremotosense-backend
+
+2. Levanta la infraestructura completa (Base de datos PostGIS \+ API Spring Boot):  
+   docker compose up \--build \-d
+
+3. Verifica que el sistema está corriendo:  
+   docker logs \-f terremotosense\_api
+
+El backend estará disponible en http://localhost:8080.
+
+## **API Endpoints**
+
+| Método | Endpoint | Descripción |
+| :---- | :---- | :---- |
+| GET | /api/v1/sismos/recientes | Devuelve el historial de sismos de las últimas 24 horas. |
+| GET | /api/v1/sismos/filtrar | Permite filtrar por diasAtras y minMagnitud. |
+| GET | /api/v1/sismos/zona | Busca sismos cercanos dada una lat, lon y radioKm. |
+| WS | /ws-sismos | Endpoint de conexión STOMP. Topic: /topic/alertas-sismos |
+
+*Desarrollado con pasión para resolver problemas del mundo real.*

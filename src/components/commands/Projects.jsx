@@ -76,6 +76,110 @@ const projectsList = [
     repo: '#',
     demo: '#',
     fakeUrl: 'lab.security-audit.local/infra'
+  },
+  {
+    id: 4,
+    title: 'FinTech Batch Sentinel',
+    shortDescription: 'Sistema backend de procesamiento por lotes (Batch) multihilo para auditoría y detección de fraudes financieros en tiempo real.',
+    longDescription: 'Sistema backend de alto rendimiento diseñado bajo Clean Architecture y estructurado como un proyecto Maven Multi-Módulo. Procesa masivamente transacciones financieras por lotes (Batch) mediante hilos concurrentes (Worker Threads) y ejecuta reglas de detección de fraude en memoria con total thread-safety antes de persistir los resultados en PostgreSQL.',
+    role: 'Backend Developer / Software Architect',
+    techSummary: 'Java, Spring Boot, PostgreSQL, Docker, Maven, Multithreading',
+    techDetails: [
+      'Java',
+      'Spring Boot',
+      'Spring Data JPA',
+      'PostgreSQL',
+      'Docker',
+      'Docker Compose',
+      'Maven',
+      'Multithreading',
+      'Clean Architecture'
+    ],
+    phases: [
+      {
+        title: 'Módulos y Clean Architecture',
+        description: 'Estructura modular Maven diseñada para garantizar bajo acoplamiento y alta cohesión:',
+        items: [
+          '**fintech-core (Dominio):** Modelos de datos (`Transaction`) y reglas de negocio puras (`FraudRule`). Totalmente desacoplado de frameworks.',
+          '**fintech-batch (Procesamiento):** Motor de procesamiento concurrente. Lee registros por fragmentos (Chunks) y delega tareas a un `ExecutorService`.',
+          '**fintech-api (Infraestructura y Web):** Capa Spring Boot para inyección de dependencias, exposición de endpoints REST y persistencia con Spring Data JPA y PostgreSQL.'
+        ]
+      },
+      {
+        title: 'Concurrencia y Patrones Técnicos',
+        description: 'Optimización de rendimiento y seguridad en entornos multihilo:',
+        items: [
+          '**Multithreading y Concurrencia:** Distribución de miles de registros en hilos paralelos (Worker Threads) para maximizar el uso de CPU.',
+          '**Thread-Safety:** Almacenamiento y validación en memoria mediante colecciones concurrentes (`ConcurrentHashMap`) para prevenir condiciones de carrera.',
+          '**Patrón Strategy (SOLID):** Inyección polimórfica de reglas de fraude sin alterar el procesador principal (principio Open/Closed).'
+        ]
+      },
+      {
+        title: 'Reglas de Detección de Fraude',
+        description: 'Reglas implementadas para la auditoría y análisis en tiempo real:',
+        items: [
+          '**VelocityRule:** Identificación de ráfagas inusuales de transacciones de una misma cuenta en lapsos de segundos configurables.',
+          '**SalamiAttackRule:** Detección de acumulación de micro-transacciones sospechosas (ataque tipo Salami) en memoria concurrente.',
+          '**TimeWindowRule:** Bloqueo automático de transacciones que intentan ejecutarse fuera del horario bancario permitido.',
+          '**AmountThresholdRule:** Detección y contención de picos de monto que sobrepasan los límites máximos establecidos.'
+        ]
+      }
+    ],
+    repo: 'https://github.com/IvanBarranco0226/fintech-batch-sentinel.git',
+    demo: '#',
+    fakeUrl: 'fintech.sentinel.internal/batch/audit'
+  },
+  {
+    id: 5,
+    title: 'TerremotoSense: Monitoreo Sísmico en Tiempo Real',
+    shortDescription: 'Motor de procesamiento geoespacial y distribución de sismos en tiempo real con WebSockets (STOMP), PostGIS y Frontend interactivo diseñado por IA (UX/UI).',
+    longDescription: 'Plataforma avanzada de monitoreo y alerta sísmica en tiempo real. Resuelve el reto de la sincronización asíncrona de datos desde el servicio geológico USGS y la ejecución de consultas geoespaciales complejas (Geofencing con PostGIS y ST_DWithin). Distribuye alertas instantáneas a interfaces de usuario mediante WebSockets (STOMP) y simula la propagación de ondas sísmicas en mapas reactivos. La interfaz de usuario (Frontend) fue diseñada y construida en su totalidad mediante Inteligencia Artificial con agentes especializados en UX/UI.',
+    role: 'Backend & Geo-Architect (Frontend AI UX/UI)',
+    techSummary: 'Java, Spring Boot, PostGIS, WebSockets, React (AI UI), Leaflet, Docker',
+    techDetails: [
+      'Java',
+      'Spring Boot',
+      'PostGIS',
+      'WebSockets (STOMP)',
+      'Hibernate Spatial (JTS)',
+      'React',
+      'Frontend AI (UX/UI Agent)',
+      'Leaflet',
+      'Docker Compose'
+    ],
+    phases: [
+      {
+        title: '1. Arquitectura Event-Driven y Geoespacial',
+        description: 'Flujo continuo de datos e ingesta automatizada:',
+        items: [
+          '**Ingesta Automática (Cron Job):** Hilo programado en Spring Boot que consume y parsea periódicamente el feed GeoJSON del servicio sismológico USGS.',
+          '**Motor Geoespacial (SRID 4326 WGS 84):** Conversión de datos en crudo a geometrías espaciales indexadas en PostGIS mediante Hibernate Spatial (JTS).',
+          '**Distribución Push de Baja Latencia:** Broker de mensajería STOMP sobre WebSockets para enviar alertas instantáneas a los clientes sin necesidad de sondeo (polling).',
+          '**Tolerancia a Duplicados:** Filtros lógicos mediante llaves únicas (USGS ID) que previenen la redundancia y preservan la integridad de datos masivos.'
+        ]
+      },
+      {
+        title: '2. Geofencing y Endpoints de Consulta',
+        description: 'Capacidades de análisis espacial y APIs de consumo:',
+        items: [
+          '**Geofencing con ST_DWithin:** Cálculo de distancias reales considerando la curvatura terrestre para identificar sismos en un radio específico basado en el GPS del usuario.',
+          '**API REST Reactiva:** Endpoints optimizados (`/api/v1/sismos/recientes`, `/api/v1/sismos/filtrar`, `/api/v1/sismos/zona`) con filtrado por rango de fechas, magnitud y radio geográfico.',
+          '**Multi-Stage Docker Build:** Empaquetado optimizado en dos fases que aísla el código fuente y reduce el peso de la imagen final para producción.'
+        ]
+      },
+      {
+        title: '3. Frontend Diseñado y Creado por IA (UX/UI)',
+        description: 'Experiencia interactiva reactiva generada íntegramente con Inteligencia Artificial:',
+        items: [
+          '**Desarrollo asistido por Agente de Diseño IA:** La interfaz completa, arquitectura de componentes, paleta de colores y patrones de interacción UX/UI fueron generados y optimizados al 100% mediante Inteligencia Artificial.',
+          '**Visualización Reactiva (Leaflet):** Mapas interactivos de alta precisión que renderizan eventos y simulan matemáticamente la onda sísmica en tiempo real.',
+          '**Suscripción en Vivo a Eventos:** Conexión continua con el canal `/topic/alertas-sismos` para reflejar temblores al instante sin recarga de pantalla.'
+        ]
+      }
+    ],
+    repo: 'https://github.com/IvanBarranco0226/terremotosense-backend.git',
+    demo: 'https://terremotosense-frontend.vercel.app/',
+    fakeUrl: 'terremotosense.app/live-monitor'
   }
 ];
 
