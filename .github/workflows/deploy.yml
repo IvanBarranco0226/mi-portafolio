@@ -1,4 +1,3 @@
-cat << 'EOF' > .github/workflows/deploy.yml
 name: Deploy Astro site to Pages
 
 on:
